@@ -1,0 +1,12 @@
+{
+  "data": {
+    "me": {
+      "bitmoji": {
+        "avatar": "https://render.bitstrips.com/v2/cpanel/sticker-circle-bitmoji-id.png?transparent=1&palette=1",
+        "id": "my-bitmoji-id"
+      },
+      "displayName": "Ghostface Chillah",
+      "externalId": "my-external-id"
+    }
+  }
+}

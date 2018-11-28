@@ -1,0 +1,10 @@
+docs/
+example/
+reports/
+test/
+lib/test/
+docs
+
+tsconfig.json
+tslint.json
+.prettierrc
