@@ -81,6 +81,14 @@ interface SnapchatStrategyOptions {
   scopeSeparator?: string;
   /**
    * @optional
+   * Determines whether Snapchat's scope strings are normalized according to Snapchat's
+   * convention of prepending the scope URL prefix to the scope string.
+   *
+   * @default true
+   */
+  normalizeScope?: boolean;
+  /**
+   * @optional
    *
    * URL used to obtain an access token from Snapchat
    *
@@ -254,7 +262,7 @@ function getGraphFieldForNormalizedFieldName(field: string): string {
 /**
  * @hidden
  */
-function normalizeScope(scope: string): string {
+function applyScopeNormalization(scope: string): string {
   return scope.startsWith('https:')
     ? scope
     : config.OAUTH_SCOPE_URL_PREFIX + scope;
@@ -273,6 +281,8 @@ function normalizeOptions(
       ? scopesStringOrArray.split(scopeSeparator)
       : scopesStringOrArray;
   const profileFields = options.profileFields || [];
+  const shouldNormalizeScope =
+    options.normalizeScope !== undefined ? options.normalizeScope : true;
   return {
     ...options,
     authorizationURL: options.authorizationURL || config.SNAP_ACCOUNTS_AUTH_URL,
@@ -280,7 +290,9 @@ function normalizeOptions(
       .map(getGraphFieldForNormalizedFieldName)
       .filter(Boolean),
     profileURL: options.profileURL || `${config.SNAP_KIT_API_URL}/me`,
-    scope: scopes.map(normalizeScope).filter(Boolean),
+    scope: shouldNormalizeScope
+      ? scopes.map(applyScopeNormalization).filter(Boolean)
+      : scopes,
     scopeSeparator,
     tokenURL: options.tokenURL || config.SNAP_ACCOUNTS_TOKEN_URL,
   };

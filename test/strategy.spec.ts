@@ -25,7 +25,22 @@ describe('Strategy', function() {
       expect(strategy._scope[0]).to.equal(config.OAUTH_SCOPE_URL_PREFIX + 'user.display_name');
       expect(strategy._scope[1]).to.equal(config.OAUTH_SCOPE_URL_PREFIX + 'user.bitmoji.avatar');
     });
-  })
+  });
+  describe('constructed with normalize scope option set to false', function () {
+    var strategy = new SnapchatStrategy({
+      callbackURL: '',
+      clientID: 'ABC123',
+      clientSecret: 'secret',
+      scope: ['user.display_name', 'user.bitmoji.avatar'],
+      normalizeScope: false
+    },
+      function () { });
+
+    it('should not have fully qualified scopes', function () {
+      expect(strategy._scope[0]).to.equal('user.display_name');
+      expect(strategy._scope[1]).to.equal('user.bitmoji.avatar');
+    });
+  });
 
   describe('constructed with undefined options', function() {
     it('should throw', function() {
